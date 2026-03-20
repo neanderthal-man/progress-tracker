@@ -3,169 +3,114 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>UPSC Prep Board</title>
+<title>Reflection</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#141b2d;min-height:100vh;color:#e2e8f0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#1e2535;min-height:100vh;color:#e2e8f0}
 button{font-family:inherit;cursor:pointer}
 input,select,textarea{font-family:inherit;outline:none}
-
-#appbar{background:#0d1424;height:56px;display:flex;align-items:center;gap:16px;padding:0 24px;position:sticky;top:0;z-index:50;border-bottom:1px solid #1e2d45}
-#logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#3b82f6,#6366f1);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;font-weight:700;flex-shrink:0}
+#appbar{background:#161d2e;height:58px;display:flex;align-items:center;gap:16px;padding:0 24px;position:sticky;top:0;z-index:50;border-bottom:1px solid #2a3550}
+#logo{width:34px;height:34px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden}
 #appname{font-weight:600;font-size:15px;color:#e2e8f0;white-space:nowrap}
 #bar-div{width:1px;height:20px;background:rgba(255,255,255,0.1)}
 nav{display:flex;gap:2px;flex:1}
 nav button{padding:6px 14px;font-size:13px;border-radius:7px;border:none;background:transparent;color:rgba(255,255,255,0.4);font-weight:400;transition:all 0.15s}
 nav button.active{background:rgba(255,255,255,0.08);color:#e2e8f0;font-weight:500}
-#sync-status{font-size:12px;white-space:nowrap;padding:4px 10px;border-radius:6px}
-#sync-status.synced{color:#34d399}
-#sync-status.saving{color:#fbbf24}
-#sync-status.error{color:#f87171}
 #addtaskbtn{padding:7px 16px;font-size:13px;border-radius:8px;border:none;background:#2563eb;color:#fff;font-weight:500;white-space:nowrap}
-
 #content{padding:20px 24px;max-width:1200px;margin:0 auto}
 h2{font-size:17px;font-weight:600;margin-bottom:2px;color:#e2e8f0}
 h3{font-size:14px;font-weight:600;color:#cbd5e1}
 .sub{font-size:13px;color:#64748b}
-
-.progwrap{background:#1e2d45;border-radius:4px;height:5px;overflow:hidden;margin:10px 0 16px}
+.progwrap{background:#2a3550;border-radius:4px;height:5px;overflow:hidden;margin:10px 0 16px}
 .progbar{height:100%;border-radius:4px;background:linear-gradient(90deg,#3b82f6,#22c55e);transition:width 0.5s}
-
 #kanban{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.col{background:#1a2540;border-radius:12px;padding:12px;border:1px solid #1e2d45}
-.col-head{display:flex;align-items:center;gap:7px;margin-bottom:12px;padding-bottom:9px;border-bottom:1px solid #1e2d45}
+.col{background:#242f47;border-radius:12px;padding:12px;border:1px solid #2a3550}
+.col-head{display:flex;align-items:center;gap:7px;margin-bottom:12px;padding-bottom:9px;border-bottom:1px solid #2a3550}
 .col-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 .col-title{font-size:13px;font-weight:600;color:#94a3b8;flex:1}
-.col-count{font-size:11px;font-weight:500;background:#0d1424;border:1px solid #1e2d45;border-radius:20px;padding:1px 8px;color:#64748b}
-.col-empty{text-align:center;padding:20px 0;color:#334155;font-size:13px}
-
-.card{background:#1e2d45;border:1px solid #243452;border-radius:10px;padding:12px 13px;margin-bottom:8px;display:flex;flex-direction:column;gap:8px;border-left-width:3px}
+.col-count{font-size:11px;font-weight:500;background:#161d2e;border:1px solid #2a3550;border-radius:20px;padding:1px 8px;color:#64748b}
+.col-empty{text-align:center;padding:20px 0;color:#3d4f6e;font-size:13px}
+.card{background:#2a3550;border:1px solid #334166;border-radius:10px;padding:12px 13px;margin-bottom:8px;display:flex;flex-direction:column;gap:8px;border-left-width:3px}
 .card.overdue{border-color:#7f1d1d}
 .card-title{font-size:13px;font-weight:500;line-height:1.45;flex:1;color:#e2e8f0}
 .card-tags{display:flex;flex-wrap:wrap;gap:4px}
 .tag{font-size:11px;padding:2px 8px;border-radius:20px;white-space:nowrap;font-weight:500}
-.card-timer{font-size:11px;color:#475569;display:flex;align-items:center;gap:5px;font-variant-numeric:tabular-nums}
+.card-timer{font-size:11px;color:#4a5e80;display:flex;align-items:center;gap:5px;font-variant-numeric:tabular-nums}
 .card-timer.running{color:#60a5fa}
 .card-timer.paused{color:#fbbf24}
-.timer-dot{width:5px;height:5px;border-radius:50%;background:#60a5fa;display:inline-block}
-.timer-dot.paused{background:#fbbf24}
+.tdot{width:5px;height:5px;border-radius:50%;display:inline-block}
 .card-actions{margin-top:auto;display:flex;gap:6px;flex-wrap:wrap}
-.card-btn{font-size:12px;padding:5px 12px;border-radius:7px;font-weight:500}
-.card-menu{background:none;border:none;color:#475569;font-size:18px;padding:0 2px;line-height:1;flex-shrink:0}
+.cbtn{font-size:12px;padding:5px 12px;border-radius:7px;font-weight:500;border:1px solid}
+.card-menu{background:none;border:none;color:#4a5e80;font-size:18px;padding:0 2px;line-height:1;flex-shrink:0}
 .card-row{display:flex;align-items:flex-start;gap:6px}
-
-.bl-row{background:#1e2d45;border:1px solid #243452;border-radius:10px;padding:12px 16px;margin-bottom:6px;display:flex;align-items:center;gap:10px;border-left-width:3px}
+.bl-row{background:#2a3550;border:1px solid #334166;border-radius:10px;padding:12px 16px;margin-bottom:6px;display:flex;align-items:center;gap:10px;border-left-width:3px}
 .bl-main{flex:1;min-width:0}
 .bl-title{font-size:13px;font-weight:500;color:#e2e8f0}
 .bl-notes{font-size:12px;color:#64748b;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
-.move-btn{font-size:12px;padding:5px 12px;border-radius:7px;font-weight:500;white-space:nowrap;flex-shrink:0}
-
+.move-btn{font-size:12px;padding:5px 12px;border-radius:7px;font-weight:500;white-space:nowrap;flex-shrink:0;border:1px solid}
 .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
-.stat-card{background:#1a2540;border:1px solid #1e2d45;border-radius:12px;padding:16px 18px;border-top-width:3px}
+.stat-card{background:#242f47;border:1px solid #2a3550;border-radius:12px;padding:16px 18px;border-top-width:3px}
 .stat-label{font-size:12px;color:#64748b;margin-bottom:6px;font-weight:500}
 .stat-val{font-size:22px;font-weight:700;letter-spacing:-0.02em;margin-bottom:3px;color:#e2e8f0}
-.stat-sub{font-size:11px;color:#475569}
-.chart-wrap{background:#1a2540;border:1px solid #1e2d45;border-radius:12px;padding:20px 24px;margin-bottom:16px}
+.stat-sub{font-size:11px;color:#4a5e80}
+.chart-wrap{background:#242f47;border:1px solid #2a3550;border-radius:12px;padding:20px 24px;margin-bottom:16px}
 .chart-row{margin-bottom:14px}
 .chart-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
 .chart-name{display:flex;align-items:center;gap:7px;font-size:13px;font-weight:500;color:#94a3b8}
 .chart-sqdot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
 .chart-right{display:flex;gap:14px;align-items:center}
 .chart-pct{font-size:12px;font-weight:600;min-width:32px;text-align:right}
-.chart-bar-bg{background:#0d1424;border-radius:4px;height:8px;overflow:hidden}
+.chart-bar-bg{background:#161d2e;border-radius:4px;height:8px;overflow:hidden}
 .chart-bar{height:100%;border-radius:4px;transition:width 0.5s}
 .mini-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.mini-card{background:#141b2d;border-radius:9px;padding:12px 14px}
-.mini-label{font-size:11px;color:#475569;margin-bottom:3px}
+.mini-card{background:#1e2535;border-radius:9px;padding:12px 14px}
+.mini-label{font-size:11px;color:#4a5e80;margin-bottom:3px}
 .mini-val{font-size:20px;font-weight:700;color:#e2e8f0}
-
 #overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:200;align-items:center;justify-content:center;padding:16px}
 #overlay.show{display:flex}
-.modal{background:#1a2540;border-radius:14px;overflow:hidden;width:100%;max-width:480px;box-shadow:0 8px 40px rgba(0,0,0,0.4);border:1px solid #243452}
-.modal-head{padding:16px 20px 12px;border-bottom:1px solid #1e2d45;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.modal{background:#242f47;border-radius:14px;overflow:hidden;width:100%;max-width:480px;box-shadow:0 8px 40px rgba(0,0,0,0.4);border:1px solid #334166}
+.modal-head{padding:16px 20px 12px;border-bottom:1px solid #2a3550;display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
 .modal-title{font-weight:600;font-size:15px;line-height:1.4;flex:1;color:#e2e8f0}
-.modal-close{background:none;border:none;color:#475569;font-size:22px;line-height:1;padding:0}
+.modal-close{background:none;border:none;color:#4a5e80;font-size:22px;line-height:1;padding:0}
 .modal-body{padding:18px 24px 24px;max-height:80vh;overflow-y:auto}
 .field{margin-bottom:14px}
 .field label{display:block;font-size:12px;font-weight:500;color:#64748b;margin-bottom:5px}
-.field input,.field select,.field textarea{width:100%;font-size:13px;padding:8px 11px;border-radius:8px;border:1px solid #243452;background:#141b2d;color:#e2e8f0}
+.field input,.field select,.field textarea{width:100%;font-size:13px;padding:8px 11px;border-radius:8px;border:1px solid #334166;background:#1e2535;color:#e2e8f0}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
-.modal-foot{display:flex;gap:8px;flex-wrap:wrap;align-items:center;border-top:1px solid #1e2d45;padding-top:14px;margin-top:14px}
+.modal-foot{display:flex;gap:8px;flex-wrap:wrap;align-items:center;border-top:1px solid #2a3550;padding-top:14px;margin-top:14px}
 .detail-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
-.detail-timer{background:#141b2d;border-radius:9px;padding:11px 14px;margin-bottom:14px;display:flex;align-items:center;gap:10px;border:1px solid #1e2d45}
+.detail-timer{background:#1e2535;border-radius:9px;padding:11px 14px;margin-bottom:14px;display:flex;align-items:center;gap:10px;border:1px solid #2a3550}
 .tval{font-size:16px;font-weight:700;font-variant-numeric:tabular-nums;color:#e2e8f0}
-.sep{width:1px;height:18px;background:#243452;flex-shrink:0}
+.sep{width:1px;height:18px;background:#334166;flex-shrink:0}
 .b-pri{font-size:13px;padding:7px 16px;border-radius:8px;border:none;background:#2563eb;color:#fff;font-weight:500}
-.b-sec{font-size:13px;padding:7px 16px;border-radius:8px;border:1px solid #243452;background:#1e2d45;color:#94a3b8;font-weight:500}
+.b-sec{font-size:13px;padding:7px 16px;border-radius:8px;border:1px solid #334166;background:#2a3550;color:#94a3b8;font-weight:500}
 .b-green{font-size:13px;padding:7px 16px;border-radius:8px;border:1px solid #166534;background:#14532d;color:#4ade80;font-weight:500}
 .b-yellow{font-size:13px;padding:7px 16px;border-radius:8px;border:1px solid #854d0e;background:#422006;color:#fbbf24;font-weight:500}
-.b-red{font-size:13px;padding:7px 16px;border-radius:8px;border:1px solid #7f1d1d;background:#1a2540;color:#f87171;font-weight:500;margin-left:auto}
-.b-sm{font-size:12px;padding:5px 12px;border-radius:7px;border:1px solid #243452;background:#1e2d45;color:#64748b;font-weight:500}
-.empty-bl{text-align:center;padding:48px;color:#334155;font-size:14px;background:#1a2540;border-radius:12px;border:1px solid #1e2d45}
-
-#setup{display:none;position:fixed;inset:0;background:#141b2d;z-index:300;align-items:center;justify-content:center;padding:24px}
-#setup.show{display:flex}
-.setup-box{background:#1a2540;border-radius:16px;padding:36px 40px;max-width:540px;width:100%;box-shadow:0 4px 32px rgba(0,0,0,0.3);border:1px solid #243452}
-.setup-box h1{font-size:21px;font-weight:700;margin-bottom:6px;color:#e2e8f0}
-.setup-box .desc{font-size:14px;color:#64748b;line-height:1.7;margin-bottom:24px}
-.step{display:flex;gap:12px;margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid #1e2d45}
-.step:last-of-type{border-bottom:none}
-.step-num{width:26px;height:26px;border-radius:50%;background:#2563eb;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
-.step-body{flex:1;font-size:13px;color:#94a3b8;line-height:1.7}
-.step-body strong{color:#e2e8f0}
-.step-body a{color:#60a5fa;text-decoration:none}
-.step-body code{background:#0d1424;padding:1px 6px;border-radius:4px;font-size:12px;font-family:monospace;color:#94a3b8}
-.setup-inp{width:100%;font-size:13px;padding:9px 12px;border-radius:8px;border:1px solid #243452;margin-top:8px;color:#e2e8f0;background:#141b2d;font-family:inherit}
-.setup-inp:focus{border-color:#3b82f6}
-.setup-err{font-size:12px;color:#f87171;margin-top:8px;display:none;padding:8px 12px;background:#2d1515;border-radius:7px}
-.setup-connect-btn{width:100%;padding:12px;font-size:14px;border-radius:10px;border:none;background:#2563eb;color:#fff;font-weight:600;margin-top:20px;cursor:pointer}
-.setup-connect-btn:disabled{opacity:0.6}
-
-/* PSTYLES dark overrides applied inline */
+.b-red{font-size:13px;padding:7px 16px;border-radius:8px;border:1px solid #7f1d1d;background:#2a3550;color:#f87171;font-weight:500;margin-left:auto}
+.b-sm{font-size:12px;padding:5px 12px;border-radius:7px;border:1px solid #334166;background:#2a3550;color:#64748b;font-weight:500}
+.empty-bl{text-align:center;padding:48px;color:#3d4f6e;font-size:14px;background:#242f47;border-radius:12px;border:1px solid #2a3550}
 </style>
 </head>
 <body>
 
-<!-- ── SETUP SCREEN ── -->
-<div id="setup">
-  <div class="setup-box">
-    <h1>Set up UPSC Prep Board</h1>
-    <p class="desc">Your data will be stored on <strong>JSONBin</strong> — a free cloud service. One-time setup, takes about 3 minutes. After this you get a permanent URL that works on any device, anywhere.</p>
-
-    <div class="step">
-      <div class="step-num">1</div>
-      <div class="step-body">
-        <strong>Create a free JSONBin account</strong><br>
-        Go to <a href="https://jsonbin.io" target="_blank">jsonbin.io</a> → click <strong>Sign Up</strong> → verify your email.
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-num">2</div>
-      <div class="step-body">
-        <strong>Get your API Key</strong><br>
-        After logging in, click your profile icon (top right) → <strong>API Keys</strong> → copy the key shown under <em>"Secret Key"</em>. It starts with <code>$2b$</code>.
-      </div>
-    </div>
-
-    <div class="step">
-      <div class="step-num">3</div>
-      <div class="step-body">
-        <strong>Paste your API key below and connect</strong><br>
-        We'll automatically create your data storage bin.
-        <input class="setup-inp" id="s-key" type="password" placeholder="$2b$10$xxxxxxxxxxxxxxxxxxxxxxxx"/>
-        <div id="setup-err" class="setup-err"></div>
-      </div>
-    </div>
-
-    <button class="setup-connect-btn" id="setup-btn" onclick="setupConnect()">Connect & Start →</button>
-  </div>
-</div>
-
-<!-- ── APP BAR ── -->
 <div id="appbar">
-  <div id="logo">U</div>
-  <span id="appname">UPSC Prep Board</span>
+  <div id="logo">
+    <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect width="34" height="34" rx="10" fill="url(#lg)"/>
+      <defs>
+        <linearGradient id="lg" x1="0" y1="0" x2="34" y2="34" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#312e81"/>
+          <stop offset="100%" stop-color="#1e40af"/>
+        </linearGradient>
+      </defs>
+      <!-- open book -->
+      <path d="M17 10 C17 10 11 11 9 13.5 L9 25 C11 22.5 17 22 17 22" stroke="#a5b4fc" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <path d="M17 10 C17 10 23 11 25 13.5 L25 25 C23 22.5 17 22 17 22" stroke="#a5b4fc" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <line x1="17" y1="10" x2="17" y2="22" stroke="#818cf8" stroke-width="1.4" stroke-linecap="round"/>
+      <!-- subtle arc above = reflection -->
+      <path d="M13 8.5 Q17 6 21 8.5" stroke="#c7d2fe" stroke-width="1.3" stroke-linecap="round" fill="none" opacity="0.7"/>
+    </svg>
+  </div>
+  <span id="appname">Reflection</span>
   <div id="bar-div"></div>
   <nav>
     <button class="active" onclick="setView('today')">Today</button>
@@ -173,15 +118,13 @@ h3{font-size:14px;font-weight:600;color:#cbd5e1}
     <button onclick="setView('backlog')">Backlog</button>
     <button onclick="setView('analytics')">Analytics</button>
   </nav>
-  <span id="sync-status" class="synced">● synced</span>
   <button id="addtaskbtn" onclick="openAddModal()">+ Add Task</button>
 </div>
 
 <div id="content">
-  <div style="text-align:center;padding:80px 0;color:#94a3b8;font-size:14px">Loading your data…</div>
+  <div style="text-align:center;padding:80px 0;color:#334155;font-size:14px">Loading your data…</div>
 </div>
 
-<!-- ── MODAL ── -->
 <div id="overlay" onclick="closeModal()">
   <div class="modal" onclick="event.stopPropagation()">
     <div class="modal-head">
@@ -193,255 +136,209 @@ h3{font-size:14px;font-weight:600;color:#cbd5e1}
 </div>
 
 <script>
-// ─────────────────────────────────────────────────────────────────────────────
-// PASTE YOUR JSONBIN API KEY AND BIN ID HERE AFTER FIRST SETUP
-// (these get filled automatically when you click Connect)
-// ─────────────────────────────────────────────────────────────────────────────
-let JSONBIN_KEY = "$2a$10$8ZG02F4sQO8ZvWhP1m1Ehu0z4bUYyypEr7SfAaFkHauMCc7GlR1hC";
-let JSONBIN_BIN = "69bd8541aa77b81da9027889";
-// ─────────────────────────────────────────────────────────────────────────────
+// ── CONFIG ────────────────────────────────────────────────────────────────────
+const JSONBIN_KEY = "$2a$10$8ZG02F4sQO8ZvWhP1m1Ehu0z4bUYyypEr7SfAaFkHauMCc7GlR1hC";
+const JSONBIN_BIN = "69bd8541aa77b81da9027889";
 
-const CFG_KEY = "upsc_jsonbin_cfg_v1";
-
+// ── SUBJECTS ──────────────────────────────────────────────────────────────────
 const SUBJECTS = [
-  {id:"prelims",  label:"Prelims GS",                        color:"#3b82f6", bg:"#1e3a5f"},
-  {id:"gs1",      label:"GS-I · History, Society & Geo",     color:"#34d399", bg:"#134e3a"},
-  {id:"gs2",      label:"GS-II · Polity & Governance",       color:"#22d3ee", bg:"#0e3a45"},
-  {id:"gs3",      label:"GS-III · Economy, Env & Tech",      color:"#a78bfa", bg:"#2e1f5e"},
-  {id:"gs4",      label:"GS-IV · Ethics & Integrity",        color:"#fbbf24", bg:"#3d2e00"},
-  {id:"anthro1",  label:"Anthropology Paper-I",              color:"#f472b6", bg:"#4a1040"},
-  {id:"anthro2",  label:"Anthropology Paper-II",             color:"#fb7185", bg:"#4a1020"},
-  {id:"ca",       label:"Current Affairs",                   color:"#f87171", bg:"#4a1515"},
-  {id:"essay",    label:"Essay",                             color:"#94a3b8", bg:"#1e2535"},
-  {id:"csat",     label:"CSAT",                              color:"#c084fc", bg:"#2d1a4a"},
+  {id:"prelims", label:"Prelims GS",                    color:"#3b82f6", bg:"#1e3a5f"},
+  {id:"gs1",     label:"GS-I · History, Society & Geo", color:"#34d399", bg:"#134e3a"},
+  {id:"gs2",     label:"GS-II · Polity & Governance",   color:"#22d3ee", bg:"#0e3a45"},
+  {id:"gs3",     label:"GS-III · Economy, Env & Tech",  color:"#a78bfa", bg:"#2e1f5e"},
+  {id:"gs4",     label:"GS-IV · Ethics & Integrity",    color:"#fbbf24", bg:"#3d2e00"},
+  {id:"anthro1", label:"Anthropology Paper-I",          color:"#f472b6", bg:"#4a1040"},
+  {id:"anthro2", label:"Anthropology Paper-II",         color:"#fb7185", bg:"#4a1020"},
+  {id:"ca",      label:"Current Affairs",               color:"#f87171", bg:"#4a1515"},
+  {id:"essay",   label:"Essay",                         color:"#94a3b8", bg:"#1e2535"},
+  {id:"csat",    label:"CSAT",                          color:"#c084fc", bg:"#2d1a4a"},
 ];
-const subMap = Object.fromEntries(SUBJECTS.map(s=>[s.id,s]));
+const subMap = Object.fromEntries(SUBJECTS.map(s => [s.id, s]));
+
 const PSTYLES = {
-  High:   {bg:"#4a1515",color:"#f87171",dot:"#ef4444"},
-  Medium: {bg:"#3d2e00",color:"#fbbf24",dot:"#f59e0b"},
-  Low:    {bg:"#0f2e1a",color:"#4ade80",dot:"#22c55e"},
+  High:   {bg:"#4a1515", color:"#f87171", dot:"#ef4444"},
+  Medium: {bg:"#3d2e00", color:"#fbbf24", dot:"#f59e0b"},
+  Low:    {bg:"#0f2e1a", color:"#4ade80", dot:"#22c55e"},
 };
 
-function uid()       { return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
-function todayStr()  { return new Date().toISOString().slice(0,10); }
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+function uid()        { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+function todayStr()   { return new Date().toISOString().slice(0,10); }
 function getMonthStr(){ return new Date().toISOString().slice(0,7); }
-function getMon(d)   { const dt=new Date(d),day=dt.getDay(); dt.setDate(dt.getDate()+(day===0?-6:1-day)); dt.setHours(0,0,0,0); return dt.toISOString().slice(0,10); }
-function fmtDate(d)  { return new Date(d).toLocaleDateString("en-IN",{day:"2-digit",month:"short"}); }
-function weekLabel(m){ const s=new Date(m); s.setDate(s.getDate()+6); return fmtDate(m)+" – "+fmtDate(s); }
-function fmtTime(s)  { if(!s||s<0)return"0s"; const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sc=s%60; return h>0?h+"h "+m+"m":m>0?m+"m "+sc+"s":sc+"s"; }
-function elapsed(t)  { if(!t.startedAt)return t.elapsed||0; if(t.status==="inprogress")return (t.elapsed||0)+Math.floor((Date.now()-t.startedAt)/1000); return t.elapsed||0; }
+function getMon(d)    { const dt=new Date(d), day=dt.getDay(); dt.setDate(dt.getDate()+(day===0?-6:1-day)); dt.setHours(0,0,0,0); return dt.toISOString().slice(0,10); }
+function fmtDate(d)   { return new Date(d).toLocaleDateString("en-IN",{day:"2-digit",month:"short"}); }
+function weekLabel(m) { const s=new Date(m); s.setDate(s.getDate()+6); return fmtDate(m)+" – "+fmtDate(s); }
+function fmtTime(s)   { if(!s||s<0)return"0s"; const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sc=s%60; return h>0?h+"h "+m+"m":m>0?m+"m "+sc+"s":sc+"s"; }
 
-// ── JSONBin API ───────────────────────────────────────────────────────────────
-function jbHeaders(){ return {"Content-Type":"application/json","X-Master-Key":JSONBIN_KEY,"X-Bin-Versioning":"false"}; }
-
-async function jbCreate(initialData){
-  const res = await fetch("https://api.jsonbin.io/v3/b",{
-    method:"POST",
-    headers:{...jbHeaders(),"X-Bin-Name":"upsc-board","X-Bin-Private":"false"},
-    body: JSON.stringify(initialData)
-  });
-  if(!res.ok) throw new Error("Create failed: "+res.status);
-  const j = await res.json();
-  return j.metadata.id;
+function elapsed(t) {
+  const base = t.elapsed || 0;
+  if (t.status === "inprogress" && !t.paused && t.startedAt)
+    return base + Math.floor((Date.now() - t.startedAt) / 1000);
+  return base;
 }
 
-async function jbLoad(){
-  const res = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN}/latest`,{headers:jbHeaders()});
-  if(!res.ok) throw new Error("Load failed: "+res.status);
+// ── JSONBIN ───────────────────────────────────────────────────────────────────
+function jbHeaders() {
+  return {"Content-Type":"application/json","X-Master-Key":JSONBIN_KEY,"X-Bin-Versioning":"false"};
+}
+
+async function jbLoad() {
+  const res = await fetch("https://api.jsonbin.io/v3/b/"+JSONBIN_BIN+"/latest", {headers:jbHeaders()});
+  if (!res.ok) throw new Error("Load failed "+res.status);
   const j = await res.json();
   return j.record.tasks || [];
 }
 
-async function jbSave(tasksToSave){
+async function jbSave(ts) {
   setSyncStatus("saving","● saving…");
-  const res = await fetch(`https://api.jsonbin.io/v3/b/${JSONBIN_BIN}`,{
-    method:"PUT",
-    headers: jbHeaders(),
-    body: JSON.stringify({tasks:tasksToSave})
+  const res = await fetch("https://api.jsonbin.io/v3/b/"+JSONBIN_BIN, {
+    method:"PUT", headers:jbHeaders(),
+    body: JSON.stringify({tasks:ts})
   });
-  if(!res.ok){ setSyncStatus("error","● save failed"); throw new Error("Save failed"); }
+  if (!res.ok) { setSyncStatus("error","● save failed"); return; }
   setSyncStatus("synced","● synced");
 }
 
-function setSyncStatus(cls,text){
-  const el=document.getElementById("sync-status");
-  el.className=cls; el.textContent=text;
-}
+function setSyncStatus(cls, text) {} // removed from UI, kept to avoid call errors
 
-// Save immediately on meaningful actions — no debounce timer burning requests
-function scheduleSave(){
-  jbSave(tasks).catch(()=>{});
-}
 
-// ── SETUP ─────────────────────────────────────────────────────────────────────
-function loadConfig(){
-  try{
-    const c=localStorage.getItem(CFG_KEY);
-    if(c){ const p=JSON.parse(c); JSONBIN_KEY=p.key; JSONBIN_BIN=p.bin; return !!(p.key&&p.bin); }
-  }catch{}
-  return false;
-}
-function saveConfig(){ localStorage.setItem(CFG_KEY,JSON.stringify({key:JSONBIN_KEY,bin:JSONBIN_BIN})); }
+function scheduleSave() { jbSave(tasks).catch(()=>{}); }
 
-async function setupConnect(){
-  const key = document.getElementById("s-key").value.trim();
-  const err = document.getElementById("setup-err");
-  const btn = document.getElementById("setup-btn");
-  err.style.display="none";
-  if(!key){ err.textContent="Please paste your API key."; err.style.display="block"; return; }
-  JSONBIN_KEY=key;
-  btn.textContent="Connecting…"; btn.disabled=true;
-  try{
-    // Create a new bin with seed data
-    const seed = {tasks:seedData()};
-    JSONBIN_BIN = await jbCreate(seed);
-    tasks = seed.tasks;
-    saveConfig();
-    document.getElementById("setup").classList.remove("show");
-    render(); startTimer();
-    setSyncStatus("synced","● synced");
-    // Show the bin ID to the user so they can hard-code it for GitHub Pages
-    showBinReady();
-  }catch(e){
-    err.textContent="Could not connect. Please check your API key and try again.";
-    err.style.display="block";
-    btn.textContent="Connect & Start →"; btn.disabled=false;
-    JSONBIN_KEY=""; JSONBIN_BIN="";
-  }
-}
-
-function showBinReady(){
-  openModal("Setup complete!",`
-    <p style="font-size:14px;color:#374151;line-height:1.7;margin-bottom:16px">
-      Your data bin has been created. To use this on <strong>GitHub Pages</strong> (permanent URL), 
-      copy the two values below and paste them into the HTML file at the top of the &lt;script&gt; section 
-      where it says <code style="background:#f1f5f9;padding:1px 6px;border-radius:4px;font-size:12px">JSONBIN_KEY</code> and <code style="background:#f1f5f9;padding:1px 6px;border-radius:4px;font-size:12px">JSONBIN_BIN</code>.
-    </p>
-    <div class="field">
-      <label>Your API Key (JSONBIN_KEY)</label>
-      <input style="width:100%;font-size:12px;padding:8px 11px;border-radius:8px;border:1px solid #e2e8f0;font-family:monospace" value="${JSONBIN_KEY}" readonly onclick="this.select()"/>
-    </div>
-    <div class="field">
-      <label>Your Bin ID (JSONBIN_BIN)</label>
-      <input style="width:100%;font-size:12px;padding:8px 11px;border-radius:8px;border:1px solid #e2e8f0;font-family:monospace" value="${JSONBIN_BIN}" readonly onclick="this.select()"/>
-    </div>
-    <p style="font-size:12px;color:#64748b;margin-bottom:16px">Click each field to select and copy it. Keep these safe.</p>
-    <button class="b-pri" onclick="closeModal()" style="width:100%">Got it — Let's go!</button>
-  `);
-}
-
-// ── SEED DATA ─────────────────────────────────────────────────────────────────
-function seedData(){
-  const today=todayStr(), mon=getMon(new Date());
-  return[
-    {id:uid(),title:"Ancient History – Indus Valley Civilisation",subject:"prelims",priority:"High",dueDate:today,status:"planned",scope:"daily",weekStart:mon,notes:"Economy & social structure",elapsed:0,startedAt:null,completedAt:null,createdAt:today},
-    {id:uid(),title:"Ethics – Aptitude & Foundational Values",subject:"mains4",priority:"Medium",dueDate:today,status:"planned",scope:"daily",weekStart:mon,notes:"Lexicon Ch.1",elapsed:0,startedAt:null,completedAt:null,createdAt:today},
-    {id:uid(),title:"Economy – Monetary Policy basics",subject:"mains3",priority:"Low",dueDate:"",status:"planned",scope:"backlog",weekStart:"",notes:"Ramesh Singh Ch.7",elapsed:0,startedAt:null,completedAt:null,createdAt:today},
+// ── SEED ──────────────────────────────────────────────────────────────────────
+function seedData() {
+  const today = todayStr(), mon = getMon(new Date());
+  return [
+    {id:uid(),title:"Ancient History – Indus Valley",subject:"prelims",priority:"High",dueDate:today,status:"planned",scope:"daily",weekStart:mon,notes:"Economy & social structure",elapsed:0,startedAt:null,paused:false,completedAt:null,createdAt:today},
+    {id:uid(),title:"Ethics – Aptitude & Foundational Values",subject:"gs4",priority:"Medium",dueDate:today,status:"planned",scope:"daily",weekStart:mon,notes:"Lexicon Ch.1",elapsed:0,startedAt:null,paused:false,completedAt:null,createdAt:today},
+    {id:uid(),title:"Economy – Monetary Policy basics",subject:"gs3",priority:"Low",dueDate:"",status:"planned",scope:"backlog",weekStart:"",notes:"Ramesh Singh Ch.7",elapsed:0,startedAt:null,paused:false,completedAt:null,createdAt:today},
   ];
 }
 
-// ── APP STATE ─────────────────────────────────────────────────────────────────
-let tasks=[], currentView="today", timerInterval=null;
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let tasks = [], currentView = "today", timerInterval = null;
 
-function setView(v){
-  currentView=v;
-  document.querySelectorAll("nav button").forEach((b,i)=>{
-    b.classList.toggle("active",["today","week","backlog","analytics"][i]===v);
+function setView(v) {
+  currentView = v;
+  document.querySelectorAll("nav button").forEach((b,i) => {
+    b.classList.toggle("active", ["today","week","backlog","analytics"][i] === v);
   });
   render();
 }
-function startTimer(){
+
+function startTimer() {
   clearInterval(timerInterval);
-  timerInterval=setInterval(()=>{ if(tasks.some(t=>t.status==="inprogress")) render(); },1000);
+  timerInterval = setInterval(() => {
+    if (tasks.some(t => t.status === "inprogress" && !t.paused)) render();
+  }, 1000);
 }
 
 // ── TASK OPS ──────────────────────────────────────────────────────────────────
-function startTask(id){
-  const t=tasks.find(x=>x.id===id); if(!t)return;
-  t.status="inprogress"; t.startedAt=Date.now(); t.paused=false;
+function startTask(id) {
+  const t = tasks.find(x => x.id === id); if (!t) return;
+  t.status = "inprogress"; t.startedAt = Date.now(); t.paused = false;
   scheduleSave(); render();
 }
-function pauseTask(id){
-  const t=tasks.find(x=>x.id===id); if(!t)return;
-  t.elapsed=elapsed(t); t.startedAt=null; t.paused=true;
+function pauseTask(id) {
+  const t = tasks.find(x => x.id === id); if (!t) return;
+  t.elapsed = elapsed(t); t.startedAt = null; t.paused = true;
   scheduleSave(); render();
 }
-function resumeTask(id){
-  const t=tasks.find(x=>x.id===id); if(!t)return;
-  t.startedAt=Date.now(); t.paused=false;
+function resumeTask(id) {
+  const t = tasks.find(x => x.id === id); if (!t) return;
+  t.startedAt = Date.now(); t.paused = false;
   scheduleSave(); render();
 }
-function completeTask(id){
-  const t=tasks.find(x=>x.id===id); if(!t)return;
-  t.elapsed=elapsed(t); t.startedAt=null; t.status="completed"; t.completedAt=new Date().toISOString();
+function completeTask(id) {
+  const t = tasks.find(x => x.id === id); if (!t) return;
+  t.elapsed = elapsed(t); t.startedAt = null; t.paused = false;
+  t.status = "completed"; t.completedAt = new Date().toISOString();
   scheduleSave(); render(); closeModal();
 }
-function reopenTask(id){
-  const t=tasks.find(x=>x.id===id); if(!t)return;
-  t.status="planned"; t.startedAt=null;
+function reopenTask(id) {
+  const t = tasks.find(x => x.id === id); if (!t) return;
+  t.status = "planned"; t.startedAt = null; t.paused = false;
   scheduleSave(); render(); closeModal();
 }
-function deleteTask(id){
-  tasks=tasks.filter(t=>t.id!==id);
+function deleteTask(id) {
+  tasks = tasks.filter(t => t.id !== id);
   scheduleSave(); render(); closeModal();
 }
-function moveTask(id,scope){
-  const t=tasks.find(x=>x.id===id); if(!t)return;
-  const today=todayStr(), mon=getMon(new Date());
-  if(scope==="daily")       { t.scope="daily";   t.dueDate=today; t.weekStart=mon; t.status="planned"; }
-  else if(scope==="weekly") { t.scope="weekly";  t.weekStart=mon; t.dueDate="";    t.status="planned"; }
-  else                      { t.scope="backlog"; t.dueDate="";    t.weekStart="";  t.status="planned"; }
+function moveTask(id, scope) {
+  const t = tasks.find(x => x.id === id); if (!t) return;
+  const today = todayStr(), mon = getMon(new Date());
+  if (scope === "daily")       { t.scope="daily";   t.dueDate=today; t.weekStart=mon; t.status="planned"; }
+  else if (scope === "weekly") { t.scope="weekly";  t.weekStart=mon; t.dueDate="";   t.status="planned"; }
+  else                         { t.scope="backlog"; t.dueDate="";   t.weekStart="";  t.status="planned"; }
   scheduleSave(); render(); closeModal();
 }
-function updateNotes(id,val){
-  const t=tasks.find(x=>x.id===id); if(t){ t.notes=val; scheduleSave(); }
+function updateNotes(id, val) {
+  const t = tasks.find(x => x.id === id); if (t) { t.notes = val; scheduleSave(); }
 }
 
 // ── RENDER ────────────────────────────────────────────────────────────────────
-function render(){
-  const today=todayStr(), monday=getMon(new Date()), month=getMonthStr();
-  const c=document.getElementById("content");
-  if(currentView==="today")     c.innerHTML=renderKanban(tasks.filter(t=>t.scope==="daily"&&t.dueDate===today), "Today · "+fmtDate(new Date()));
-  else if(currentView==="week") c.innerHTML=renderKanban(tasks.filter(t=>(t.scope==="weekly"||t.scope==="daily")&&t.weekStart===monday), "This Week · "+weekLabel(monday));
-  else if(currentView==="backlog")   c.innerHTML=renderBacklog(tasks.filter(t=>t.scope==="backlog"));
-  else if(currentView==="analytics") c.innerHTML=renderAnalytics(today,monday,month);
+function render() {
+  const today = todayStr(), monday = getMon(new Date()), month = getMonthStr();
+  const c = document.getElementById("content");
+  if      (currentView === "today")     c.innerHTML = renderKanban(tasks.filter(t => t.scope==="daily" && t.dueDate===today), "Today · "+fmtDate(new Date()));
+  else if (currentView === "week")      c.innerHTML = renderKanban(tasks.filter(t => (t.scope==="weekly"||t.scope==="daily") && t.weekStart===monday), "This Week · "+weekLabel(monday));
+  else if (currentView === "backlog")   c.innerHTML = renderBacklog(tasks.filter(t => t.scope==="backlog"));
+  else if (currentView === "analytics") c.innerHTML = renderAnalytics(today, monday, month);
 }
 
 // ── KANBAN ────────────────────────────────────────────────────────────────────
-function renderKanban(ts,label){
-  const done=ts.filter(t=>t.status==="completed").length, total=ts.length;
-  const pct=total>0?Math.round(done/total*100):0;
-  const cols=[
-    {id:"planned",   title:"Planned",     accent:"#64748b"},
-    {id:"inprogress",title:"In Progress", accent:"#3b82f6"},
-    {id:"completed", title:"Completed",   accent:"#22c55e"},
+function renderKanban(ts, label) {
+  const done = ts.filter(t => t.status==="completed").length, total = ts.length;
+  const pct = total > 0 ? Math.round(done/total*100) : 0;
+  const cols = [
+    {id:"planned",    title:"Planned",     accent:"#64748b"},
+    {id:"inprogress", title:"In Progress", accent:"#3b82f6"},
+    {id:"completed",  title:"Completed",   accent:"#22c55e"},
   ];
-  let html=`<h2>${label}</h2><p class="sub">${done}/${total} tasks completed</p>
-  <div class="progwrap"><div class="progbar" style="width:${pct}%"></div></div>
-  <div id="kanban">`;
-  cols.forEach(col=>{
-    const ct=ts.filter(t=>t.status===col.id);
-    html+=`<div class="col">
+  let html = `<h2>${label}</h2><p class="sub">${done}/${total} tasks completed</p>
+    <div class="progwrap"><div class="progbar" style="width:${pct}%"></div></div>
+    <div id="kanban">`;
+  cols.forEach(col => {
+    const ct = ts.filter(t => t.status === col.id);
+    html += `<div class="col">
       <div class="col-head">
         <span class="col-dot" style="background:${col.accent}"></span>
         <span class="col-title">${col.title}</span>
         <span class="col-count">${ct.length}</span>
       </div>`;
-    if(ct.length===0) html+=`<div class="col-empty">No tasks</div>`;
-    ct.forEach(t=>{ html+=renderCard(t); });
-    html+=`</div>`;
+    if (ct.length === 0) html += `<div class="col-empty">No tasks</div>`;
+    ct.forEach(t => { html += renderCard(t); });
+    html += `</div>`;
   });
-  return html+`</div>`;
+  return html + `</div>`;
 }
 
-function renderCard(t){
-  const sub=subMap[t.subject]||{}, pc=PSTYLES[t.priority]||{};
-  const e=elapsed(t), overdue=t.dueDate&&t.dueDate<todayStr()&&t.status!=="completed", running=t.status==="inprogress";
-  let ab="";
-  if(t.status==="planned")    ab=`<button class="card-btn" style="border:1px solid #bfdbfe;background:#eff6ff;color:#1d4ed8" onclick="startTask('${t.id}')">▶ Start</button>`;
-  else if(t.status==="inprogress") ab=`<button class="card-btn" style="border:1px solid #bbf7d0;background:#f0fdf4;color:#15803d" onclick="completeTask('${t.id}')">✓ Complete</button>`;
-  else ab=`<button class="card-btn" style="border:1px solid #e2e8f0;background:#f8fafc;color:#475569" onclick="reopenTask('${t.id}')">↩ Reopen</button>`;
-  return `<div class="card${overdue?" overdue":""}" style="border-left-color:${sub.color||'#e2e8f0'}">
+// ── TASK CARD ─────────────────────────────────────────────────────────────────
+function renderCard(t) {
+  const sub = subMap[t.subject] || {};
+  const pc  = PSTYLES[t.priority] || {};
+  const e   = elapsed(t);
+  const overdue  = t.dueDate && t.dueDate < todayStr() && t.status !== "completed";
+  const isRun    = t.status === "inprogress" && !t.paused;
+  const isPaused = t.status === "inprogress" && t.paused;
+
+  let actions = "";
+  if (t.status === "planned") {
+    actions = `<button class="cbtn" style="border-color:#1d4a8a;background:#1a3a6e;color:#60a5fa" onclick="startTask('${t.id}')">▶ Start</button>`;
+  } else if (isRun) {
+    actions = `<button class="cbtn" style="border-color:#854d0e;background:#3d2200;color:#fbbf24" onclick="pauseTask('${t.id}')">⏸ Pause</button>
+               <button class="cbtn" style="border-color:#166534;background:#14532d;color:#4ade80" onclick="completeTask('${t.id}')">✓ Done</button>`;
+  } else if (isPaused) {
+    actions = `<button class="cbtn" style="border-color:#1d4a8a;background:#1a3a6e;color:#60a5fa" onclick="resumeTask('${t.id}')">▶ Resume</button>
+               <button class="cbtn" style="border-color:#166534;background:#14532d;color:#4ade80" onclick="completeTask('${t.id}')">✓ Done</button>`;
+  } else {
+    actions = `<button class="cbtn" style="border-color:#243452;background:#1e2d45;color:#64748b" onclick="reopenTask('${t.id}')">↩ Reopen</button>`;
+  }
+
+  const timerCls  = isRun ? "running" : isPaused ? "paused" : "";
+  const dotColor  = isRun ? "#60a5fa" : "#fbbf24";
+  const timerNote = isRun ? " · recording" : isPaused ? " · paused" : "";
+
+  return `<div class="card${overdue?" overdue":""}" style="border-left-color:${sub.color||'#243452'}">
     <div class="card-row">
       <span class="card-title">${t.title}</span>
       <button class="card-menu" onclick="openDetailModal('${t.id}')">⋯</button>
@@ -451,88 +348,99 @@ function renderCard(t){
       <span class="tag" style="background:${pc.bg};color:${pc.color}">
         <span style="display:inline-block;width:5px;height:5px;border-radius:50%;background:${pc.dot};margin-right:3px;vertical-align:middle"></span>${t.priority}
       </span>
-      ${t.dueDate?`<span class="tag" style="background:${overdue?"#fee2e2":"#f1f5f9"};color:${overdue?"#b91c1c":"#64748b"}">${overdue?"Overdue":fmtDate(t.dueDate)}</span>`:""}
+      ${t.dueDate?`<span class="tag" style="background:${overdue?"#4a1515":"#1e2d45"};color:${overdue?"#f87171":"#475569"}">${overdue?"Overdue":fmtDate(t.dueDate)}</span>`:""}
     </div>
-    <div class="card-timer${running?" running":""}">
-      ${running?'<span class="timer-dot"></span>':""} ${fmtTime(e)}${running?" · running":""}
+    <div class="card-timer ${timerCls}">
+      ${(isRun||isPaused)?`<span class="tdot" style="background:${dotColor}"></span>`:""}
+      ${fmtTime(e)}${timerNote}
     </div>
-    <div class="card-actions">${ab}</div>
+    <div class="card-actions">${actions}</div>
   </div>`;
 }
 
 // ── BACKLOG ───────────────────────────────────────────────────────────────────
-function renderBacklog(ts){
-  let html=`<div style="margin-bottom:16px"><h2>Backlog</h2><p class="sub">${ts.length} tasks parked</p></div>`;
-  if(ts.length===0) return html+`<div class="empty-bl">Backlog is empty — great job!</div>`;
-  const grouped={};
-  ts.forEach(t=>{ grouped[t.subject]=grouped[t.subject]||[]; grouped[t.subject].push(t); });
-  Object.entries(grouped).forEach(([subId,arr])=>{
-    const sub=subMap[subId]||{};
-    html+=`<div style="margin-bottom:16px">
+function renderBacklog(ts) {
+  let html = `<div style="margin-bottom:16px"><h2>Backlog</h2><p class="sub">${ts.length} tasks parked</p></div>`;
+  if (ts.length === 0) return html + `<div class="empty-bl">Backlog is empty — great job!</div>`;
+  const grouped = {};
+  ts.forEach(t => { grouped[t.subject] = grouped[t.subject] || []; grouped[t.subject].push(t); });
+  Object.entries(grouped).forEach(([subId, arr]) => {
+    const sub = subMap[subId] || {};
+    html += `<div style="margin-bottom:16px">
       <div style="display:flex;align-items:center;gap:7px;margin-bottom:8px">
         <span style="width:9px;height:9px;border-radius:3px;background:${sub.color};display:inline-block"></span>
-        <span style="font-size:13px;font-weight:600;color:#374151">${sub.label}</span>
-        <span style="font-size:12px;color:#94a3b8">(${arr.length})</span>
+        <span style="font-size:13px;font-weight:600;color:#94a3b8">${sub.label}</span>
+        <span style="font-size:12px;color:#475569">(${arr.length})</span>
       </div>`;
-    arr.forEach(t=>{
-      const pc=PSTYLES[t.priority]||{};
-      html+=`<div class="bl-row" style="border-left-color:${sub.color}">
+    arr.forEach(t => {
+      const pc = PSTYLES[t.priority] || {};
+      html += `<div class="bl-row" style="border-left-color:${sub.color}">
         <div class="bl-main">
           <div class="bl-title">${t.title}</div>
           ${t.notes?`<div class="bl-notes">${t.notes}</div>`:""}
         </div>
         <span class="tag" style="background:${pc.bg};color:${pc.color};flex-shrink:0">${t.priority}</span>
-        <button class="move-btn" style="border:1px solid #bfdbfe;background:#eff6ff;color:#1d4ed8" onclick="moveTask('${t.id}','daily')">→ Today</button>
-        <button class="move-btn" style="border:1px solid #e2e8f0;background:#f8fafc;color:#374151" onclick="moveTask('${t.id}','weekly')">→ Week</button>
+        <button class="move-btn" style="border-color:#1d4a8a;background:#1a3a6e;color:#60a5fa" onclick="moveTask('${t.id}','daily')">→ Today</button>
+        <button class="move-btn" style="border-color:#243452;background:#1e2d45;color:#94a3b8" onclick="moveTask('${t.id}','weekly')">→ Week</button>
         <button class="card-menu" onclick="openDetailModal('${t.id}')">⋯</button>
       </div>`;
     });
-    html+=`</div>`;
+    html += `</div>`;
   });
   return html;
 }
 
 // ── ANALYTICS ─────────────────────────────────────────────────────────────────
-function renderAnalytics(today,monday,month){
-  const completed=tasks.filter(t=>t.status==="completed");
-  const dailyTime  =tasks.filter(t=>t.dueDate===today||t.createdAt===today).reduce((s,t)=>s+elapsed(t),0);
-  const weeklyTime =tasks.filter(t=>t.weekStart===monday).reduce((s,t)=>s+elapsed(t),0);
-  const monthlyTime=tasks.filter(t=>t.createdAt&&t.createdAt.slice(0,7)===month).reduce((s,t)=>s+elapsed(t),0);
-  const totalTime  =tasks.reduce((s,t)=>s+elapsed(t),0);
-  const todayDone =completed.filter(t=>t.completedAt&&t.completedAt.slice(0,10)===today).length;
-  const weekDone  =completed.filter(t=>t.completedAt&&t.completedAt.slice(0,10)>=monday).length;
-  const monthDone =completed.filter(t=>t.completedAt&&t.completedAt.slice(0,7)===month).length;
+function renderAnalytics(today, monday, month) {
+  const completed   = tasks.filter(t => t.status === "completed");
+  const dailyTime   = tasks.filter(t => t.dueDate===today||t.createdAt===today).reduce((s,t)=>s+elapsed(t),0);
+  const weeklyTime  = tasks.filter(t => t.weekStart===monday).reduce((s,t)=>s+elapsed(t),0);
+  const monthlyTime = tasks.filter(t => t.createdAt&&t.createdAt.slice(0,7)===month).reduce((s,t)=>s+elapsed(t),0);
+  const totalTime   = tasks.reduce((s,t) => s+elapsed(t), 0);
+  const todayDone   = completed.filter(t => t.completedAt&&t.completedAt.slice(0,10)===today).length;
+  const weekDone    = completed.filter(t => t.completedAt&&t.completedAt.slice(0,10)>=monday).length;
+  const monthDone   = completed.filter(t => t.completedAt&&t.completedAt.slice(0,7)===month).length;
 
-  const tStats=[
-    {label:"Today's Study",    val:fmtTime(dailyTime),   sub:todayDone+" tasks done",        accent:"#3b82f6"},
-    {label:"This Week",        val:fmtTime(weeklyTime),  sub:weekDone+" tasks done",          accent:"#8b5cf6"},
-    {label:"This Month",       val:fmtTime(monthlyTime), sub:monthDone+" tasks done",         accent:"#0d9488"},
-    {label:"Total Study Time", val:fmtTime(totalTime),   sub:completed.length+" total done",  accent:"#f59e0b"},
+  const tStats = [
+    {label:"Today's Study",    val:fmtTime(dailyTime),   sub:todayDone+" tasks done",       accent:"#3b82f6"},
+    {label:"This Week",        val:fmtTime(weeklyTime),  sub:weekDone+" tasks done",         accent:"#8b5cf6"},
+    {label:"This Month",       val:fmtTime(monthlyTime), sub:monthDone+" tasks done",        accent:"#0d9488"},
+    {label:"Total Study Time", val:fmtTime(totalTime),   sub:completed.length+" total done", accent:"#f59e0b"},
   ];
 
-  let html=`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+  let html = `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
     <h2>Analytics & Study Hours</h2>
     <button class="b-sm" onclick="exportBackup()">⬇ Export Backup</button>
   </div><div class="stat-grid">`;
-  tStats.forEach(s=>{ html+=`<div class="stat-card" style="border-top-color:${s.accent}"><div class="stat-label">${s.label}</div><div class="stat-val">${s.val}</div><div class="stat-sub">${s.sub}</div></div>`; });
-  html+=`</div>`;
+  tStats.forEach(s => {
+    html += `<div class="stat-card" style="border-top-color:${s.accent}">
+      <div class="stat-label">${s.label}</div><div class="stat-val">${s.val}</div><div class="stat-sub">${s.sub}</div>
+    </div>`;
+  });
+  html += `</div>`;
 
-  const bySub={};
-  SUBJECTS.forEach(s=>{ bySub[s.id]={total:0,done:0,time:0}; });
-  tasks.forEach(t=>{ if(!bySub[t.subject])bySub[t.subject]={total:0,done:0,time:0}; bySub[t.subject].total++; if(t.status==="completed")bySub[t.subject].done++; bySub[t.subject].time+=elapsed(t); });
-  const chartData=SUBJECTS.map(s=>({...s,...bySub[s.id]})).filter(s=>s.total>0).sort((a,b)=>b.time-a.time);
-  const maxTime=Math.max(...chartData.map(s=>s.time),1);
+  const bySub = {};
+  SUBJECTS.forEach(s => { bySub[s.id] = {total:0,done:0,time:0}; });
+  tasks.forEach(t => {
+    if (!bySub[t.subject]) bySub[t.subject] = {total:0,done:0,time:0};
+    bySub[t.subject].total++;
+    if (t.status === "completed") bySub[t.subject].done++;
+    bySub[t.subject].time += elapsed(t);
+  });
+  const chartData = SUBJECTS.map(s => ({...s,...bySub[s.id]})).filter(s => s.total > 0).sort((a,b) => b.time-a.time);
+  const maxTime = Math.max(...chartData.map(s => s.time), 1);
 
-  html+=`<div class="chart-wrap"><h3 style="margin-bottom:4px">Time spent by subject</h3>
-    <p style="font-size:12px;color:#94a3b8;margin-bottom:16px">How you are spending your study hours</p>`;
-  if(!chartData.length) html+=`<div style="color:#94a3b8;font-size:13px">No study time recorded yet. Start a task to begin tracking.</div>`;
-  chartData.forEach(s=>{
-    const pct=Math.round(s.time/maxTime*100), share=totalTime>0?Math.round(s.time/totalTime*100):0;
-    html+=`<div class="chart-row">
+  html += `<div class="chart-wrap"><h3 style="margin-bottom:4px">Time spent by subject</h3>
+    <p style="font-size:12px;color:#475569;margin-bottom:16px">How you are spending your study hours</p>`;
+  if (!chartData.length) html += `<div style="color:#334155;font-size:13px">No study time recorded yet.</div>`;
+  chartData.forEach(s => {
+    const pct   = Math.round(s.time/maxTime*100);
+    const share = totalTime > 0 ? Math.round(s.time/totalTime*100) : 0;
+    html += `<div class="chart-row">
       <div class="chart-meta">
         <div class="chart-name"><span class="chart-sqdot" style="background:${s.color}"></span>${s.label}</div>
         <div class="chart-right">
-          <span style="font-size:12px;color:#94a3b8">${s.done}/${s.total} tasks</span>
+          <span style="font-size:12px;color:#475569">${s.done}/${s.total}</span>
           <span style="font-size:12px;color:#64748b;min-width:40px;text-align:right">${fmtTime(s.time)}</span>
           <span class="chart-pct" style="color:${s.color}">${share}%</span>
         </div>
@@ -540,34 +448,35 @@ function renderAnalytics(today,monday,month){
       <div class="chart-bar-bg"><div class="chart-bar" style="width:${pct}%;background:${s.color}"></div></div>
     </div>`;
   });
-  html+=`</div>`;
+  html += `</div>`;
 
-  const total=tasks.length, comp=completed.length;
-  const mini=[
-    {label:"Total Tasks",val:total},{label:"Completed",val:comp},
-    {label:"In Progress",val:tasks.filter(t=>t.status==="inprogress").length},
-    {label:"Planned",val:tasks.filter(t=>t.status==="planned").length},
-    {label:"Backlog",val:tasks.filter(t=>t.scope==="backlog").length},
+  const total = tasks.length, comp = completed.length;
+  const mini = [
+    {label:"Total Tasks",    val:total},
+    {label:"Completed",      val:comp},
+    {label:"In Progress",    val:tasks.filter(t=>t.status==="inprogress").length},
+    {label:"Planned",        val:tasks.filter(t=>t.status==="planned").length},
+    {label:"Backlog",        val:tasks.filter(t=>t.scope==="backlog").length},
     {label:"Completion Rate",val:(total>0?Math.round(comp/total*100):0)+"%"},
   ];
-  html+=`<div class="chart-wrap"><h3 style="margin-bottom:14px">Overall task completion</h3><div class="mini-grid">`;
-  mini.forEach(s=>{ html+=`<div class="mini-card"><div class="mini-label">${s.label}</div><div class="mini-val">${s.val}</div></div>`; });
-  return html+`</div></div>`;
+  html += `<div class="chart-wrap"><h3 style="margin-bottom:14px">Overall task completion</h3><div class="mini-grid">`;
+  mini.forEach(s => { html += `<div class="mini-card"><div class="mini-label">${s.label}</div><div class="mini-val">${s.val}</div></div>`; });
+  return html + `</div></div>`;
 }
 
 // ── MODALS ────────────────────────────────────────────────────────────────────
-function openModal(title,body){
-  document.getElementById("modal-title-text").textContent=title;
-  document.getElementById("modal-body").innerHTML=body;
+function openModal(title, body) {
+  document.getElementById("modal-title-text").textContent = title;
+  document.getElementById("modal-body").innerHTML = body;
   document.getElementById("overlay").classList.add("show");
 }
-function closeModal(){ document.getElementById("overlay").classList.remove("show"); }
+function closeModal() { document.getElementById("overlay").classList.remove("show"); }
 
-function openAddModal(){
-  const today=todayStr();
-  const sd=currentView==="week"?"weekly":currentView==="backlog"?"backlog":"daily";
-  const subOpts=SUBJECTS.map(s=>`<option value="${s.id}">${s.label}</option>`).join("");
-  openModal("Add new task",`
+function openAddModal() {
+  const today = todayStr();
+  const sd = currentView==="week"?"weekly":currentView==="backlog"?"backlog":"daily";
+  const subOpts = SUBJECTS.map(s => `<option value="${s.id}">${s.label}</option>`).join("");
+  openModal("Add new task", `
     <div class="field"><label>Task title *</label>
       <input id="f-title" placeholder="e.g. Polity – Fundamental Rights" style="width:100%"/></div>
     <div class="grid2">
@@ -593,60 +502,68 @@ function openAddModal(){
       <button class="b-sec" onclick="closeModal()">Cancel</button>
       <button class="b-pri" onclick="saveNewTask()">Add Task</button>
     </div>`);
-  setTimeout(()=>document.getElementById("f-title").focus(),50);
+  setTimeout(() => document.getElementById("f-title").focus(), 50);
 }
 
-function toggleDueDate(){
-  document.getElementById("f-due-wrap").style.display=document.getElementById("f-scope").value==="daily"?"":"none";
+function toggleDueDate() {
+  document.getElementById("f-due-wrap").style.display =
+    document.getElementById("f-scope").value === "daily" ? "" : "none";
 }
 
-function saveNewTask(){
-  const title=document.getElementById("f-title").value.trim();
-  if(!title){ alert("Please enter a task title."); return; }
-  const scope=document.getElementById("f-scope").value;
-  const today=todayStr(), mon=getMon(new Date());
+function saveNewTask() {
+  const title = document.getElementById("f-title").value.trim();
+  if (!title) { alert("Please enter a task title."); return; }
+  const scope = document.getElementById("f-scope").value;
+  const today = todayStr(), mon = getMon(new Date());
   tasks.push({
-    id:uid(), title,
-    subject:  document.getElementById("f-subject").value,
-    priority: document.getElementById("f-priority").value,
+    id: uid(), title,
+    subject:   document.getElementById("f-subject").value,
+    priority:  document.getElementById("f-priority").value,
     scope, status:"planned",
-    dueDate:  scope==="daily"?document.getElementById("f-due").value:"",
-    weekStart:scope==="daily"||scope==="weekly"?mon:"",
-    notes:    document.getElementById("f-notes").value,
-    elapsed:0, startedAt:null, completedAt:null, createdAt:today,
+    dueDate:   scope==="daily" ? document.getElementById("f-due").value : "",
+    weekStart: scope==="daily"||scope==="weekly" ? mon : "",
+    notes:     document.getElementById("f-notes").value,
+    elapsed:0, startedAt:null, paused:false, completedAt:null, createdAt:today,
   });
   scheduleSave(); closeModal(); render();
 }
 
-function openDetailModal(id){
-  const t=tasks.find(x=>x.id===id); if(!t)return;
-  const sub=subMap[t.subject]||{}, pc=PSTYLES[t.priority]||{};
-  const e=elapsed(t), running=t.status==="inprogress";
-  const running=t.status==="inprogress"&&!t.paused;
-  const paused=t.status==="inprogress"&&t.paused;
-  let ab="";
-  if(t.status==="planned")    ab=`<button class="b-pri" onclick="startTask('${t.id}');closeModal()">▶ Start</button>`;
-  else if(running)            ab=`<button class="b-yellow" onclick="pauseTask('${t.id}');closeModal()">⏸ Pause</button>
-                                   <button class="b-green" onclick="completeTask('${t.id}')">✓ Complete</button>`;
-  else if(paused)             ab=`<button class="b-pri" onclick="resumeTask('${t.id}');closeModal()">▶ Resume</button>
-                                   <button class="b-green" onclick="completeTask('${t.id}')">✓ Complete</button>`;
-  else                        ab=`<button class="b-sec" onclick="reopenTask('${t.id}')">↩ Reopen</button>`;
-  let mb="";
-  if(t.scope!=="daily")   mb+=`<button class="b-sec" onclick="moveTask('${t.id}','daily')">→ Today</button>`;
-  if(t.scope!=="weekly")  mb+=`<button class="b-sec" onclick="moveTask('${t.id}','weekly')">→ Week</button>`;
-  if(t.scope!=="backlog") mb+=`<button class="b-sec" onclick="moveTask('${t.id}','backlog')">→ Backlog</button>`;
-  openModal(t.title,`
+function openDetailModal(id) {
+  const t = tasks.find(x => x.id === id); if (!t) return;
+  const sub    = subMap[t.subject] || {};
+  const pc     = PSTYLES[t.priority] || {};
+  const e      = elapsed(t);
+  const isRun  = t.status === "inprogress" && !t.paused;
+  const isPaused = t.status === "inprogress" && t.paused;
+
+  let ab = "";
+  if (t.status === "planned")  ab = `<button class="b-pri" onclick="startTask('${t.id}');closeModal()">▶ Start</button>`;
+  else if (isRun)              ab = `<button class="b-yellow" onclick="pauseTask('${t.id}');closeModal()">⏸ Pause</button>
+                                      <button class="b-green" onclick="completeTask('${t.id}')">✓ Complete</button>`;
+  else if (isPaused)           ab = `<button class="b-pri" onclick="resumeTask('${t.id}');closeModal()">▶ Resume</button>
+                                      <button class="b-green" onclick="completeTask('${t.id}')">✓ Complete</button>`;
+  else                         ab = `<button class="b-sec" onclick="reopenTask('${t.id}')">↩ Reopen</button>`;
+
+  let mb = "";
+  if (t.scope !== "daily")   mb += `<button class="b-sec" onclick="moveTask('${t.id}','daily')">→ Today</button>`;
+  if (t.scope !== "weekly")  mb += `<button class="b-sec" onclick="moveTask('${t.id}','weekly')">→ Week</button>`;
+  if (t.scope !== "backlog") mb += `<button class="b-sec" onclick="moveTask('${t.id}','backlog')">→ Backlog</button>`;
+
+  const timerNote = isRun ? '<span style="font-size:12px;color:#60a5fa;margin-left:auto">● recording</span>'
+                  : isPaused ? '<span style="font-size:12px;color:#fbbf24;margin-left:auto">⏸ paused</span>' : "";
+
+  openModal(t.title, `
     <div class="detail-tags">
       <span class="tag" style="background:${sub.bg};color:${sub.color}">${sub.label||""}</span>
       <span class="tag" style="background:${pc.bg};color:${pc.color}">${t.priority}</span>
-      <span class="tag" style="background:#f1f5f9;color:#475569">${t.scope==="daily"?"Today":t.scope==="weekly"?"This Week":"Backlog"}</span>
-      ${t.dueDate?`<span class="tag" style="background:#f1f5f9;color:#475569">Due ${fmtDate(t.dueDate)}</span>`:""}
+      <span class="tag" style="background:#1e2d45;color:#64748b">${t.scope==="daily"?"Today":t.scope==="weekly"?"This Week":"Backlog"}</span>
+      ${t.dueDate?`<span class="tag" style="background:#1e2d45;color:#64748b">Due ${fmtDate(t.dueDate)}</span>`:""}
     </div>
     <div class="detail-timer">
       <span style="font-size:13px;color:#64748b">Study time</span>
       <span class="tval">${fmtTime(e)}</span>
-      ${running?'<span style="font-size:12px;color:#60a5fa;margin-left:auto">● recording</span>':""}
-      ${paused?'<span style="font-size:12px;color:#fbbf24;margin-left:auto">⏸ paused</span>':""}    </div>
+      ${timerNote}
+    </div>
     <div class="field"><label>Notes</label>
       <textarea rows="3" style="width:100%;height:72px" onchange="updateNotes('${t.id}',this.value)">${t.notes||""}</textarea></div>
     <div class="modal-foot">
@@ -655,22 +572,23 @@ function openDetailModal(id){
     </div>`);
 }
 
-function exportBackup(){
-  const blob=new Blob([JSON.stringify({tasks,exportedAt:new Date().toISOString()},null,2)],{type:"application/json"});
-  const a=document.createElement("a"); a.href=URL.createObjectURL(blob);
-  a.download="upsc-backup-"+todayStr()+".json"; a.click();
+function exportBackup() {
+  const blob = new Blob([JSON.stringify({tasks,exportedAt:new Date().toISOString()},null,2)],{type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "upsc-backup-"+todayStr()+".json";
+  a.click();
 }
 
-document.addEventListener("keydown",e=>{
-  if(e.key==="Escape") closeModal();
-  if((e.metaKey||e.ctrlKey)&&e.key==="n"){ e.preventDefault(); openAddModal(); }
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape") closeModal();
+  if ((e.metaKey||e.ctrlKey) && e.key === "n") { e.preventDefault(); openAddModal(); }
 });
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
-// Keys are hardcoded — skip setup screen entirely
 jbLoad()
-  .then(t=>{ tasks=t; render(); startTimer(); setSyncStatus("synced","● synced"); })
-  .catch(()=>{ setSyncStatus("error","● offline – check connection"); });
+  .then(t => { tasks = t.length ? t : seedData(); render(); startTimer(); setSyncStatus("synced","● synced"); })
+  .catch(() => { setSyncStatus("error","● offline"); document.getElementById("content").innerHTML = `<div style="text-align:center;padding:80px 0;color:#f87171;font-size:14px">Could not load data. Check your internet connection and refresh.</div>`; });
 </script>
 </body>
 </html>
