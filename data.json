@@ -1,0 +1,64 @@
+{
+  "tasks": [
+    {
+      "id": "mmz66zymgsrd",
+      "title": "Ancient History – Indus Valley Civilisation",
+      "subject": "prelims",
+      "priority": "High",
+      "dueDate": "2026-03-20",
+      "status": "planned",
+      "scope": "daily",
+      "weekStart": "2026-03-15",
+      "notes": "Economy & social structure",
+      "elapsed": 0,
+      "startedAt": null,
+      "completedAt": null,
+      "createdAt": "2026-03-20"
+    },
+    {
+      "id": "mmz66zymzrt0",
+      "title": "Ethics – Aptitude & Foundational Values",
+      "subject": "mains4",
+      "priority": "Medium",
+      "dueDate": "2026-03-20",
+      "status": "planned",
+      "scope": "daily",
+      "weekStart": "2026-03-15",
+      "notes": "Lexicon Ch.1",
+      "elapsed": 0,
+      "startedAt": null,
+      "completedAt": null,
+      "createdAt": "2026-03-20"
+    },
+    {
+      "id": "mmz66zymiu67",
+      "title": "Economy – Monetary Policy basics",
+      "subject": "mains3",
+      "priority": "Low",
+      "dueDate": "",
+      "status": "planned",
+      "scope": "backlog",
+      "weekStart": "",
+      "notes": "Ramesh Singh Ch.7",
+      "elapsed": 0,
+      "startedAt": null,
+      "completedAt": null,
+      "createdAt": "2026-03-20"
+    },
+    {
+      "id": "mmz6777o2fd6",
+      "title": "Tests 2",
+      "subject": "prelims",
+      "priority": "Medium",
+      "scope": "daily",
+      "status": "planned",
+      "dueDate": "2026-03-20",
+      "weekStart": "2026-03-15",
+      "notes": "",
+      "elapsed": 0,
+      "startedAt": null,
+      "completedAt": null,
+      "createdAt": "2026-03-20"
+    }
+  ]
+}
