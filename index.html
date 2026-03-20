@@ -264,11 +264,9 @@ function setSyncStatus(cls,text){
   el.className=cls; el.textContent=text;
 }
 
-let saveTimer=null;
+// Save immediately on meaningful actions — no debounce timer burning requests
 function scheduleSave(){
-  setSyncStatus("saving","● saving…");
-  clearTimeout(saveTimer);
-  saveTimer=setTimeout(()=>jbSave(tasks).catch(()=>{}),1500);
+  jbSave(tasks).catch(()=>{});
 }
 
 // ── SETUP ─────────────────────────────────────────────────────────────────────
@@ -650,13 +648,10 @@ document.addEventListener("keydown",e=>{
 });
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
-if(loadConfig()){
-  jbLoad()
-    .then(t=>{ tasks=t; render(); startTimer(); setSyncStatus("synced","● synced"); })
-    .catch(()=>{ setSyncStatus("error","● offline – check connection"); });
-} else {
-  document.getElementById("setup").classList.add("show");
-}
+// Keys are hardcoded — skip setup screen entirely
+jbLoad()
+  .then(t=>{ tasks=t; render(); startTimer(); setSyncStatus("synced","● synced"); })
+  .catch(()=>{ setSyncStatus("error","● offline – check connection"); });
 </script>
 </body>
 </html>
