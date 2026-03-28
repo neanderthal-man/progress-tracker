@@ -35,6 +35,7 @@ h3{font-size:14px;font-weight:600;color:#334155}
 .card-title{font-size:13px;font-weight:500;line-height:1.45;flex:1;color:#111827}
 .card-tags{display:flex;flex-wrap:wrap;gap:4px}
 .tag{font-size:11px;padding:2px 8px;border-radius:20px;white-space:nowrap;font-weight:500}
+.card-notes{font-size:11px;color:#64748b;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;max-width:100%;background:#f8fafc;border-radius:5px;padding:4px 8px;border:1px solid #e8ecf2}
 .card-timer{font-size:11px;color:#334155;display:flex;align-items:center;gap:5px;font-variant-numeric:tabular-nums}
 .card-timer.running{color:#7ecbff}
 .card-timer.paused{color:#f9d868}
@@ -82,6 +83,7 @@ h3{font-size:14px;font-weight:600;color:#334155}
 .modal-foot{display:flex;gap:8px;flex-wrap:wrap;align-items:center;border-top:1px solid #e5e8ef;padding-top:14px;margin-top:14px}
 .detail-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
 .detail-timer{background:#f8fafc;border-radius:9px;padding:11px 14px;margin-bottom:14px;display:flex;align-items:center;gap:10px;border:1px solid #d6dbe4}
+.detail-notes-box{background:#f8fafc;border:1px solid #d6dbe4;border-radius:9px;padding:11px 14px;margin-bottom:6px;font-size:13px;color:#334155;line-height:1.6;white-space:pre-wrap;word-break:break-word;min-height:36px}
 .tval{font-size:16px;font-weight:700;font-variant-numeric:tabular-nums;color:#102a43}
 .sep{width:1px;height:18px;background:#d6dbe4;flex-shrink:0}
 .b-pri{font-size:13px;padding:8px 16px;border-radius:8px;border:none;background:#0058d5;color:#fff;font-weight:600;box-shadow:0 2px 6px rgba(0,88,213,0.32)}
@@ -91,6 +93,11 @@ h3{font-size:14px;font-weight:600;color:#334155}
 .b-red{font-size:13px;padding:8px 16px;border-radius:8px;border:1px solid #fca5a5;background:#fee2e2;color:#991b1b;font-weight:600;margin-left:auto}
 .b-sm{font-size:12px;padding:6px 12px;border-radius:7px;border:1px solid #d8e1ef;background:#f8fafc;color:#475569;font-weight:600}
 .empty-bl{text-align:center;padding:48px;color:#64748b;font-size:14px;background:#f8fafc;border-radius:12px;border:1px solid #d6dbe4}
+/* Collapsible backlog section headers */
+.section-header{display:flex;align-items:center;gap:7px;padding:9px 12px;border-radius:8px;cursor:pointer;user-select:none;transition:background 0.15s;background:#f8fafc;border:1px solid #e4e9f2}
+.section-header:hover{background:#eff2f9}
+.section-chevron{margin-left:auto;font-size:11px;color:#94a3b8;transition:transform 0.2s;display:inline-block}
+.section-chevron.open{transform:rotate(90deg)}
 </style>
 </head>
 <body>
@@ -105,11 +112,9 @@ h3{font-size:14px;font-weight:600;color:#334155}
           <stop offset="100%" stop-color="#1e40af"/>
         </linearGradient>
       </defs>
-      <!-- open book -->
       <path d="M17 10 C17 10 11 11 9 13.5 L9 25 C11 22.5 17 22 17 22" stroke="#a5b4fc" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
       <path d="M17 10 C17 10 23 11 25 13.5 L25 25 C23 22.5 17 22 17 22" stroke="#a5b4fc" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
       <line x1="17" y1="10" x2="17" y2="22" stroke="#818cf8" stroke-width="1.4" stroke-linecap="round"/>
-      <!-- subtle arc above = reflection -->
       <path d="M13 8.5 Q17 6 21 8.5" stroke="#c7d2fe" stroke-width="1.3" stroke-linecap="round" fill="none" opacity="0.7"/>
     </svg>
   </div>
@@ -166,13 +171,13 @@ const PSTYLES = {
 
 // ── HELPERS ───────────────────────────────────────────────────────────────────
 function uid()        { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
-function pad2(v){return String(v).padStart(2,'0');}
+function pad2(v)      { return String(v).padStart(2,'0'); }
 function todayStr()   { const dt = new Date(); return `${dt.getFullYear()}-${pad2(dt.getMonth()+1)}-${pad2(dt.getDate())}`; }
 function getMonthStr(){ const dt = new Date(); return `${dt.getFullYear()}-${pad2(dt.getMonth()+1)}`; }
 function getMon(d) {
   const dt = new Date(d);
   const day = dt.getDay();
-  const offset = (day + 6) % 7; // 0=Monday, 1=Tuesday,...6=Sunday
+  const offset = (day + 6) % 7;
   dt.setDate(dt.getDate() - offset);
   return `${dt.getFullYear()}-${pad2(dt.getMonth()+1)}-${pad2(dt.getDate())}`;
 }
@@ -180,6 +185,7 @@ function fmtDate(d)   { return new Date(d).toLocaleDateString("en-IN",{day:"2-di
 function weekLabel(m) { const s=new Date(m); s.setDate(s.getDate()+6); return fmtDate(m)+" – "+fmtDate(s); }
 function fmtTime(s)   { if(!s||s<0)return"0s"; const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sc=s%60; return h>0?h+"h "+m+"m":m>0?m+"m "+sc+"s":sc+"s"; }
 
+// Total elapsed time for a task (task-level, used on cards)
 function elapsed(t) {
   const base = t.elapsed || 0;
   if (t.status === "inprogress" && !t.paused && t.startedAt)
@@ -187,18 +193,43 @@ function elapsed(t) {
   return base;
 }
 
+// ── FIX #2: PER-DAY TIME TRACKING ────────────────────────────────────────────
+// Returns seconds spent on a specific calendar date only.
+// This is completely independent from the task's total elapsed time.
+function getDailyElapsed(t, dateStr) {
+  const saved = (t.dailyElapsed && t.dailyElapsed[dateStr]) || 0;
+  // Add live running time only if the current session started on that same date
+  if (t.status === "inprogress" && !t.paused && t.startedAt) {
+    const sd = new Date(t.startedAt);
+    const sessionDate = `${sd.getFullYear()}-${pad2(sd.getMonth()+1)}-${pad2(sd.getDate())}`;
+    if (sessionDate === dateStr) {
+      return saved + Math.floor((Date.now() - t.startedAt) / 1000);
+    }
+  }
+  return saved;
+}
+
+// Save the current running session into the dailyElapsed bucket.
+// Must be called BEFORE clearing startedAt.
+function recordDailySession(t) {
+  if (!t.startedAt) return;
+  const sd = new Date(t.startedAt);
+  const sessionDate = `${sd.getFullYear()}-${pad2(sd.getMonth()+1)}-${pad2(sd.getDate())}`;
+  const secs = Math.floor((Date.now() - t.startedAt) / 1000);
+  t.dailyElapsed = t.dailyElapsed || {};
+  t.dailyElapsed[sessionDate] = (t.dailyElapsed[sessionDate] || 0) + secs;
+}
+
 // ── JSONBIN ───────────────────────────────────────────────────────────────────
 function jbHeaders() {
   return {"Content-Type":"application/json","X-Master-Key":JSONBIN_KEY,"X-Bin-Versioning":"false"};
 }
-
 async function jbLoad() {
   const res = await fetch("https://api.jsonbin.io/v3/b/"+JSONBIN_BIN+"/latest", {headers:jbHeaders()});
   if (!res.ok) throw new Error("Load failed "+res.status);
   const j = await res.json();
   return j.record.tasks || [];
 }
-
 async function jbSave(ts) {
   setSyncStatus("saving","● saving…");
   const res = await fetch("https://api.jsonbin.io/v3/b/"+JSONBIN_BIN, {
@@ -208,24 +239,22 @@ async function jbSave(ts) {
   if (!res.ok) { setSyncStatus("error","● save failed"); return; }
   setSyncStatus("synced","● synced");
 }
-
-function setSyncStatus(cls, text) {} // removed from UI, kept to avoid call errors
-
-
+function setSyncStatus(cls, text) {}
 function scheduleSave() { jbSave(tasks).catch(()=>{}); }
 
 // ── SEED ──────────────────────────────────────────────────────────────────────
 function seedData() {
   const today = todayStr(), mon = getMon(new Date());
   return [
-    {id:uid(),title:"Ancient History – Indus Valley",subject:"prelims",priority:"High",dueDate:today,status:"planned",scope:"daily",weekStart:mon,notes:"Economy & social structure",elapsed:0,startedAt:null,paused:false,completedAt:null,createdAt:today},
-    {id:uid(),title:"Ethics – Aptitude & Foundational Values",subject:"gs4",priority:"Medium",dueDate:today,status:"planned",scope:"daily",weekStart:mon,notes:"Lexicon Ch.1",elapsed:0,startedAt:null,paused:false,completedAt:null,createdAt:today},
-    {id:uid(),title:"Economy – Monetary Policy basics",subject:"gs3",priority:"Low",dueDate:"",status:"planned",scope:"backlog",weekStart:"",notes:"Ramesh Singh Ch.7",elapsed:0,startedAt:null,paused:false,completedAt:null,createdAt:today},
+    {id:uid(),title:"Ancient History – Indus Valley",subject:"prelims",priority:"High",dueDate:today,status:"planned",scope:"daily",weekStart:mon,notes:"Economy & social structure",elapsed:0,dailyElapsed:{},startedAt:null,paused:false,completedAt:null,createdAt:today},
+    {id:uid(),title:"Ethics – Aptitude & Foundational Values",subject:"gs4",priority:"Medium",dueDate:today,status:"planned",scope:"daily",weekStart:mon,notes:"Lexicon Ch.1",elapsed:0,dailyElapsed:{},startedAt:null,paused:false,completedAt:null,createdAt:today},
+    {id:uid(),title:"Economy – Monetary Policy basics",subject:"gs3",priority:"Low",dueDate:"",status:"planned",scope:"backlog",weekStart:"",notes:"Ramesh Singh Ch.7",elapsed:0,dailyElapsed:{},startedAt:null,paused:false,completedAt:null,createdAt:today},
   ];
 }
 
 // ── STATE ─────────────────────────────────────────────────────────────────────
 let tasks = [], currentView = "today", timerInterval = null;
+let collapsedSections = {}; // FIX #5: tracks which backlog sections are collapsed
 
 function setView(v) {
   currentView = v;
@@ -242,24 +271,75 @@ function startTimer() {
   }, 1000);
 }
 
+// ── FIX #4: MIDNIGHT ROLLOVER ─────────────────────────────────────────────────
+// At midnight, move all today's planned/inprogress tasks to tomorrow.
+function rolloverTasks() {
+  const today = todayStr();
+  const tmr = new Date(); tmr.setDate(tmr.getDate() + 1);
+  const tomorrowStr = `${tmr.getFullYear()}-${pad2(tmr.getMonth()+1)}-${pad2(tmr.getDate())}`;
+  const mon = getMon(tmr);
+  let changed = false;
+  tasks.forEach(t => {
+    if (t.dueDate === today && (t.status === "planned" || t.status === "inprogress")) {
+      // Cleanly stop any running timer first
+      if (t.status === "inprogress" && !t.paused && t.startedAt) {
+        recordDailySession(t);
+        t.elapsed = elapsed(t);
+        t.startedAt = null;
+      }
+      t.dueDate = tomorrowStr;
+      t.weekStart = mon;
+      t.status = "planned";
+      t.paused = false;
+      changed = true;
+    }
+  });
+  if (changed) { scheduleSave(); render(); }
+}
+
+function scheduleMidnightRollover() {
+  const now = new Date();
+  const midnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0);
+  setTimeout(() => {
+    rolloverTasks();
+    scheduleMidnightRollover(); // re-arm for next midnight
+  }, midnight - now);
+}
+
+// ── FIX #1: AUTO-PAUSE OTHER RUNNING TIMERS ───────────────────────────────────
+function pauseOtherRunning(exceptId) {
+  tasks.forEach(other => {
+    if (other.id !== exceptId && other.status === "inprogress" && !other.paused && other.startedAt) {
+      recordDailySession(other);
+      other.elapsed = elapsed(other);
+      other.startedAt = null;
+      other.paused = true;
+    }
+  });
+}
+
 // ── TASK OPS ──────────────────────────────────────────────────────────────────
 function startTask(id) {
   const t = tasks.find(x => x.id === id); if (!t) return;
+  pauseOtherRunning(id); // FIX #1
   t.status = "inprogress"; t.startedAt = Date.now(); t.paused = false;
   scheduleSave(); render();
 }
 function pauseTask(id) {
   const t = tasks.find(x => x.id === id); if (!t) return;
+  recordDailySession(t); // FIX #2
   t.elapsed = elapsed(t); t.startedAt = null; t.paused = true;
   scheduleSave(); render();
 }
 function resumeTask(id) {
   const t = tasks.find(x => x.id === id); if (!t) return;
+  pauseOtherRunning(id); // FIX #1
   t.startedAt = Date.now(); t.paused = false;
   scheduleSave(); render();
 }
 function completeTask(id) {
   const t = tasks.find(x => x.id === id); if (!t) return;
+  recordDailySession(t); // FIX #2
   t.elapsed = elapsed(t); t.startedAt = null; t.paused = false;
   t.status = "completed"; t.completedAt = new Date().toISOString();
   scheduleSave(); render(); closeModal();
@@ -348,6 +428,11 @@ function renderCard(t) {
   const dotColor  = isRun ? "#60a5fa" : "#fbbf24";
   const timerNote = isRun ? " · recording" : isPaused ? " · paused" : "";
 
+  // FIX #3: Notes now visible directly on card
+  const notesHtml = t.notes
+    ? `<div class="card-notes" title="${t.notes.replace(/"/g,'&quot;')}">📝 ${t.notes}</div>`
+    : "";
+
   return `<div class="card${overdue?" overdue":""}" style="border-left-color:${sub.color||'#243452'}">
     <div class="card-row">
       <span class="card-title">${t.title}</span>
@@ -360,6 +445,7 @@ function renderCard(t) {
       </span>
       ${t.dueDate?`<span class="tag" style="background:${overdue?"#fee2e2":"#e2e8f0"};color:${overdue?"#991b1b":"#334155"}">${overdue?"Overdue":fmtDate(t.dueDate)}</span>`:""}
     </div>
+    ${notesHtml}
     <div class="card-timer ${timerCls}">
       ${(isRun||isPaused)?`<span class="tdot" style="background:${dotColor}"></span>`:""}
       ${fmtTime(e)}${timerNote}
@@ -376,34 +462,49 @@ function renderBacklog(ts) {
   ts.forEach(t => { grouped[t.subject] = grouped[t.subject] || []; grouped[t.subject].push(t); });
   Object.entries(grouped).forEach(([subId, arr]) => {
     const sub = subMap[subId] || {};
-    html += `<div style="margin-bottom:16px">
-      <div style="display:flex;align-items:center;gap:7px;margin-bottom:8px">
-        <span style="width:9px;height:9px;border-radius:3px;background:${sub.color};display:inline-block"></span>
-        <span style="font-size:13px;font-weight:600;color:#94a3b8">${sub.label}</span>
-        <span style="font-size:12px;color:#475569">(${arr.length})</span>
+    // FIX #5: collapsible sections
+    const isCollapsed = !!collapsedSections[subId];
+    html += `<div style="margin-bottom:10px">
+      <div class="section-header" onclick="toggleSection('${subId}')">
+        <span style="width:9px;height:9px;border-radius:3px;background:${sub.color||'#64748b'};display:inline-block;flex-shrink:0"></span>
+        <span style="font-size:13px;font-weight:600;color:#334155">${sub.label||subId}</span>
+        <span style="font-size:12px;color:#64748b;background:#e8ecf5;border-radius:20px;padding:1px 8px">${arr.length}</span>
+        <span class="section-chevron ${isCollapsed?'':'open'}">▶</span>
       </div>`;
-    arr.forEach(t => {
-      const pc = PSTYLES[t.priority] || {};
-      html += `<div class="bl-row" style="border-left-color:${sub.color}">
-        <div class="bl-main">
-          <div class="bl-title">${t.title}</div>
-          ${t.notes?`<div class="bl-notes">${t.notes}</div>`:""}
-        </div>
-        <span class="tag" style="background:${pc.bg};color:${pc.color};flex-shrink:0">${t.priority}</span>
-        <button class="move-btn" style="border-color:#8fb5ff;background:#eff6ff;color:#1e3a8a" onclick="moveTask('${t.id}','daily')">→ Today</button>
-        <button class="move-btn" style="border-color:#b3c7e3;background:#f1f5f9;color:#1e3a8a" onclick="moveTask('${t.id}','weekly')">→ Week</button>
-        <button class="card-menu" onclick="openDetailModal('${t.id}')">⋯</button>
-      </div>`;
-    });
+    if (!isCollapsed) {
+      html += `<div style="margin-top:6px">`;
+      arr.forEach(t => {
+        const pc = PSTYLES[t.priority] || {};
+        html += `<div class="bl-row" style="border-left-color:${sub.color||'#64748b'}">
+          <div class="bl-main">
+            <div class="bl-title">${t.title}</div>
+            ${t.notes?`<div class="bl-notes">📝 ${t.notes}</div>`:""}
+          </div>
+          <span class="tag" style="background:${pc.bg};color:${pc.color};flex-shrink:0">${t.priority}</span>
+          <button class="move-btn" style="border-color:#8fb5ff;background:#eff6ff;color:#1e3a8a" onclick="moveTask('${t.id}','daily')">→ Today</button>
+          <button class="move-btn" style="border-color:#b3c7e3;background:#f1f5f9;color:#1e3a8a" onclick="moveTask('${t.id}','weekly')">→ Week</button>
+          <button class="card-menu" onclick="openDetailModal('${t.id}')">⋯</button>
+        </div>`;
+      });
+      html += `</div>`;
+    }
     html += `</div>`;
   });
   return html;
 }
 
+// FIX #5: toggle a backlog section's collapsed state
+function toggleSection(subId) {
+  collapsedSections[subId] = !collapsedSections[subId];
+  render();
+}
+
 // ── ANALYTICS ─────────────────────────────────────────────────────────────────
 function renderAnalytics(today, monday, month) {
   const completed   = tasks.filter(t => t.status === "completed");
-  const dailyTime   = tasks.filter(t => t.dueDate===today||t.createdAt===today).reduce((s,t)=>s+elapsed(t),0);
+
+  // FIX #2: Use per-day tracking for "Today's Study" — no more cross-day bleed
+  const dailyTime   = tasks.reduce((s,t) => s + getDailyElapsed(t, today), 0);
   const weeklyTime  = tasks.filter(t => t.weekStart===monday).reduce((s,t)=>s+elapsed(t),0);
   const monthlyTime = tasks.filter(t => t.createdAt&&t.createdAt.slice(0,7)===month).reduce((s,t)=>s+elapsed(t),0);
   const totalTime   = tasks.reduce((s,t) => s+elapsed(t), 0);
@@ -533,17 +634,17 @@ function saveNewTask() {
     dueDate:   scope==="daily" ? document.getElementById("f-due").value : "",
     weekStart: scope==="daily"||scope==="weekly" ? mon : "",
     notes:     document.getElementById("f-notes").value,
-    elapsed:0, startedAt:null, paused:false, completedAt:null, createdAt:today,
+    elapsed:0, dailyElapsed:{}, startedAt:null, paused:false, completedAt:null, createdAt:today,
   });
   scheduleSave(); closeModal(); render();
 }
 
 function openDetailModal(id) {
   const t = tasks.find(x => x.id === id); if (!t) return;
-  const sub    = subMap[t.subject] || {};
-  const pc     = PSTYLES[t.priority] || {};
-  const e      = elapsed(t);
-  const isRun  = t.status === "inprogress" && !t.paused;
+  const sub      = subMap[t.subject] || {};
+  const pc       = PSTYLES[t.priority] || {};
+  const e        = elapsed(t);
+  const isRun    = t.status === "inprogress" && !t.paused;
   const isPaused = t.status === "inprogress" && t.paused;
 
   let ab = "";
@@ -562,6 +663,15 @@ function openDetailModal(id) {
   const timerNote = isRun ? '<span style="font-size:12px;color:#60a5fa;margin-left:auto">● recording</span>'
                   : isPaused ? '<span style="font-size:12px;color:#fbbf24;margin-left:auto">⏸ paused</span>' : "";
 
+  // FIX #3: Show notes in a visible read-only box, plus keep editable textarea below it
+  const notesSection = t.notes
+    ? `<div style="margin-bottom:14px">
+        <div style="font-size:12px;font-weight:500;color:#475569;margin-bottom:6px">Notes</div>
+        <div class="detail-notes-box">${t.notes.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\n/g,'<br>')}</div>
+        <div style="font-size:11px;color:#94a3b8;margin-top:4px">Edit below ↓</div>
+       </div>`
+    : "";
+
   openModal(t.title, `
     <div class="detail-tags">
       <span class="tag" style="background:${sub.bg};color:${sub.color}">${sub.label||""}</span>
@@ -574,8 +684,9 @@ function openDetailModal(id) {
       <span class="tval">${fmtTime(e)}</span>
       ${timerNote}
     </div>
-    <div class="field"><label>Notes</label>
-      <textarea rows="3" style="width:100%;height:72px" onchange="updateNotes('${t.id}',this.value)">${t.notes||""}</textarea></div>
+    ${notesSection}
+    <div class="field"><label>${t.notes ? "Edit Notes" : "Notes"}</label>
+      <textarea rows="3" style="width:100%;height:72px" oninput="updateNotes('${t.id}',this.value)" placeholder="Add notes…">${t.notes||""}</textarea></div>
     <div class="modal-foot">
       ${ab}<div class="sep"></div>${mb}
       <button class="b-red" onclick="deleteTask('${t.id}')">Delete</button>
@@ -597,8 +708,21 @@ document.addEventListener("keydown", e => {
 
 // ── INIT ──────────────────────────────────────────────────────────────────────
 jbLoad()
-  .then(t => { tasks = t.length ? t : seedData(); render(); startTimer(); setSyncStatus("synced","● synced"); })
-  .catch(() => { setSyncStatus("error","● offline"); document.getElementById("content").innerHTML = `<div style="text-align:center;padding:80px 0;color:#f87171;font-size:14px">Could not load data. Check your internet connection and refresh.</div>`; });
+  .then(loaded => {
+    // Migrate existing tasks: ensure dailyElapsed field is present
+    tasks = (loaded.length ? loaded : seedData()).map(task => ({
+      dailyElapsed: {},
+      ...task,
+    }));
+    render();
+    startTimer();
+    scheduleMidnightRollover(); // FIX #4
+    setSyncStatus("synced","● synced");
+  })
+  .catch(() => {
+    setSyncStatus("error","● offline");
+    document.getElementById("content").innerHTML = `<div style="text-align:center;padding:80px 0;color:#f87171;font-size:14px">Could not load data. Check your internet connection and refresh.</div>`;
+  });
 </script>
 </body>
 </html>
